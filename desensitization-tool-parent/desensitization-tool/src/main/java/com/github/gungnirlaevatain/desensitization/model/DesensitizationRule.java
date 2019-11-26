@@ -18,6 +18,11 @@ public class DesensitizationRule {
      */
     private String key;
     /**
+     * The Desc.
+     * 描述
+     */
+    private String desc;
+    /**
      * The Use spel.
      * 是则使用spel语法,否则使用正则表达式
      */

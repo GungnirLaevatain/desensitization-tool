@@ -1,0 +1,11 @@
+commons:
+  desensitization:
+    rules:
+      - key: mobilephone
+        matchPattern: "(.{3})(.*)(.{4})"
+        targetPattern: "$1****$3"
+        desc: "显示前3位+****+后4位。如：137****9050"
+      - key: idcard
+        useSpel: true
+        spelPattern: "T(com.github.gungnirlaevatain.desensitization.DesensitizationTool).assembleReplaceString(length()-4)+substring(length()-4,length())"
+        desc: "公民身份号码和社保卡号脱敏显示：***********4432。显示最后四位，其他隐藏"

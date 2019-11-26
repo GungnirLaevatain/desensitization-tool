@@ -29,6 +29,10 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.gungnirlaevatain</groupId>
+            <artifactId>desensitization-tool-annotation</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
