@@ -1,6 +1,7 @@
 package com.github.gungnirlaevatain.desensitization.handler;
 
 import com.github.gungnirlaevatain.desensitization.model.DesensitizationRule;
+import com.github.gungnirlaevatain.desensitization.model.SpecialWord;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -25,7 +26,7 @@ public class SpelDesensitizationHandler implements DesensitizationHandler {
 
     @Override
     public void init(DesensitizationRule desensitizationRule) {
-        spelPattern = desensitizationRule.getSpelPattern();
+        spelPattern = SpecialWord.replaceAllSpecialWord(desensitizationRule.getSpelPattern());
     }
 
     @Override

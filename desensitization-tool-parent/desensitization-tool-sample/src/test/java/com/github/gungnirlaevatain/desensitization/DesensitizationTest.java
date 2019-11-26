@@ -29,8 +29,10 @@ public class DesensitizationTest {
     public void testMain() throws Exception {
         String phone = DesensitizationTool.desensitize("mobilephone", "12345678911");
         String idCard = DesensitizationTool.desensitize("idcard", "123456789123456789");
+        String idCard2 = DesensitizationTool.desensitize("idcard2", "123456789123456789");
         Assert.assertEquals("123****8911", phone);
         Assert.assertEquals("**************6789", idCard);
+        Assert.assertEquals("**************6789", idCard2);
     }
 
 

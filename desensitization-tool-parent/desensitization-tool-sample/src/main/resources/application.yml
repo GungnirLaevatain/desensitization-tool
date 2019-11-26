@@ -9,3 +9,7 @@ commons:
         useSpel: true
         spelPattern: "T(com.github.gungnirlaevatain.desensitization.DesensitizationTool).assembleReplaceString(length()-4)+substring(length()-4,length())"
         desc: "公民身份号码和社保卡号脱敏显示：***********4432。显示最后四位，其他隐藏"
+      - key: idcard2
+        useSpel: true
+        spelPattern: "@ARS(@L-4)+substring(@L-4,@L)"
+        desc: "公民身份号码和社保卡号脱敏显示：***********4432。显示最后四位，其他隐藏"
