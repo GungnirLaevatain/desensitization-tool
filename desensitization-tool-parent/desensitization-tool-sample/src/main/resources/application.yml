@@ -13,3 +13,12 @@ commons:
         useSpel: true
         spelPattern: "@ARS(@L-4)+substring(@L-4,@L)"
         desc: "公民身份号码和社保卡号脱敏显示：***********4432。显示最后四位，其他隐藏"
+      - key: commonPattern
+        pattern: "3;4@RS;4"
+        desc: "显示前3位+****+后4位。如：137****9050"
+      - key: commonPattern2
+        pattern: "(@L-4)@RS;4"
+        desc: "公民身份号码和社保卡号脱敏显示：***********4432。显示最后四位，其他隐藏"
+      - key: commonPattern3
+        pattern: "@L/3;(@L-@L*2/3)@RS;@L/3"
+        desc: "前1/3和后1/3显示,中间脱敏"

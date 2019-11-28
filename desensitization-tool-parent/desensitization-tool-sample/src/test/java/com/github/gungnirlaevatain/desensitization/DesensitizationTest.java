@@ -41,6 +41,14 @@ public class DesensitizationTest {
         Assert.assertEquals("**************6798", testEntity.getEntity().getTo());
         Assert.assertEquals("123****8911", testEntity.getPhone());
         Assert.assertEquals("123****8922", testEntity.getEntity().getPhone());
+        phone = DesensitizationTool.desensitize("commonPattern", "12345678911");
+        Assert.assertEquals("123****8911", phone);
+        idCard = DesensitizationTool.desensitize("commonPattern2", "123456789123456789");
+        Assert.assertEquals("**************6789", idCard);
+        idCard2 = DesensitizationTool.desensitize("commonPattern3", "132456");
+        Assert.assertEquals("13**56", idCard2);
+        idCard2 = DesensitizationTool.desensitize("commonPattern3", "1324567");
+        Assert.assertEquals("13***67", idCard2);
     }
 
 

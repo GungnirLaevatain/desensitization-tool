@@ -41,4 +41,34 @@ public enum SpecialWord {
         }
         return source;
     }
+
+    public static boolean hasReplaceChar(String source) {
+        return source != null && source.contains(REPLACE_CHAR.word);
+    }
+
+    public static boolean hasSpecialWordExcludeReplaceChar(String source) {
+        for (SpecialWord specialWord : SpecialWord.values()) {
+            if (specialWord == REPLACE_CHAR) {
+                continue;
+            }
+            if (source.contains(specialWord.word)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static String replaceReplaceChar(String source) {
+        return source.replace(REPLACE_CHAR.word, REPLACE_CHAR.targetWord);
+    }
+
+    public static String replaceSpecialWordExcludeReplaceChar(String source) {
+        for (SpecialWord specialWord : SpecialWord.values()) {
+            if (specialWord == REPLACE_CHAR) {
+                continue;
+            }
+            source = source.replace(specialWord.word, specialWord.targetWord);
+        }
+        return source;
+    }
 }

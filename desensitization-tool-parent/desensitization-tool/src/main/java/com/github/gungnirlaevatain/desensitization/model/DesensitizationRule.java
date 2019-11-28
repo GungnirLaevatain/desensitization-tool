@@ -1,6 +1,7 @@
 package com.github.gungnirlaevatain.desensitization.model;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * The class Desensitization rule.
@@ -10,6 +11,7 @@ import lombok.Data;
  * @version 2019 -11-26 10:23:56
  * @since 1.0
  */
+@Accessors(chain = true)
 @Data
 public class DesensitizationRule {
     /**
@@ -22,6 +24,11 @@ public class DesensitizationRule {
      * 描述
      */
     private String desc;
+    /**
+     * The Pattern.
+     * 通用表达式
+     */
+    private String pattern;
     /**
      * The Use spel.
      * 是则使用spel语法,否则使用正则表达式

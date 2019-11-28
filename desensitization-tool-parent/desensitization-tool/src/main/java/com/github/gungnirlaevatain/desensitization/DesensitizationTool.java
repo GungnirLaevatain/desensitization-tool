@@ -2,6 +2,7 @@ package com.github.gungnirlaevatain.desensitization;
 
 import com.github.gungnirlaevatain.desensitization.annotation.Desensitize;
 import com.github.gungnirlaevatain.desensitization.annotation.NestedDesensitize;
+import com.github.gungnirlaevatain.desensitization.handler.CommonDesensitizationHandler;
 import com.github.gungnirlaevatain.desensitization.handler.DesensitizationHandler;
 import com.github.gungnirlaevatain.desensitization.handler.RegularDesensitizationHandler;
 import com.github.gungnirlaevatain.desensitization.handler.SpelDesensitizationHandler;
@@ -65,7 +66,9 @@ public class DesensitizationTool {
             return;
         }
         DesensitizationHandler handler;
-        if (rule.isUseSpel()) {
+        if (!StringUtils.isEmpty(rule.getPattern())) {
+            handler = new CommonDesensitizationHandler();
+        } else if (rule.isUseSpel()) {
             handler = new SpelDesensitizationHandler();
         } else {
             handler = new RegularDesensitizationHandler();
