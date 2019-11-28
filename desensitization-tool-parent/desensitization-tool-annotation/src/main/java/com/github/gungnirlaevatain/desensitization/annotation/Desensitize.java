@@ -32,4 +32,12 @@ public @interface Desensitize {
      * @return the string
      */
     String ref() default "";
+
+    /**
+     * Pattern
+     * 指定使用的通用表达式pattern
+     *
+     * @return the string
+     */
+    String pattern() default "";
 }

@@ -31,6 +31,7 @@ public class DesensitizationTool {
 
     private static Map<String, DesensitizationHandler> handlers = new ConcurrentHashMap<>(16);
     private static Map<Class<?>, Map<String, DesensitizationField>> fieldCache = new ConcurrentHashMap<>(64);
+    private static Map<String, DesensitizationHandler> dynamicHandlers = new ConcurrentHashMap<>(16);
 
     /**
      * Reinitialize replace string.
@@ -90,7 +91,7 @@ public class DesensitizationTool {
      * @author gungnirlaevatain
      */
     public static String desensitize(String key, String origin) {
-        if (StringUtils.isEmpty(origin)) {
+        if (StringUtils.isEmpty(origin) || StringUtils.isEmpty(key)) {
             return origin;
         }
         DesensitizationHandler handler = handlers.get(key);
@@ -100,6 +101,31 @@ public class DesensitizationTool {
         } else {
             return handler.desensitize(origin);
         }
+    }
+
+    /**
+     * Desensitize.
+     * 对输入的字符串进行脱敏
+     *
+     * @param pattern the pattern
+     *                使用的通用表达式
+     * @param origin  the origin
+     *                源字符串
+     * @return the string
+     * 脱敏后的字符串
+     * @author gungnirlaevatain
+     */
+    public static String desensitizeByPattern(String pattern, String origin) {
+        if (StringUtils.isEmpty(pattern) || StringUtils.isEmpty(origin)) {
+            return origin;
+        }
+        DesensitizationHandler handler = dynamicHandlers.computeIfAbsent(pattern, key -> {
+            DesensitizationRule rule = new DesensitizationRule().setPattern(key);
+            DesensitizationHandler desensitizationHandler = new CommonDesensitizationHandler();
+            desensitizationHandler.init(rule);
+            return desensitizationHandler;
+        });
+        return handler.desensitize(origin);
     }
 
     /**
@@ -132,7 +158,12 @@ public class DesensitizationTool {
                             source = refField.getField().get(origin);
                         }
                     }
-                    String result = desensitize(desensitize.key(), (String) source);
+                    String result;
+                    if (StringUtils.isEmpty(desensitize.key())) {
+                        result = desensitizeByPattern(desensitize.pattern(), (String) source);
+                    } else {
+                        result = desensitize(desensitize.key(), (String) source);
+                    }
                     field.getField().set(origin, result);
                 }
             } catch (IllegalAccessException e) {
@@ -160,15 +191,20 @@ public class DesensitizationTool {
         allFieldMap.forEach((name, field) -> {
             if (field.getType() == String.class) {
                 Desensitize desensitize = field.getAnnotation(Desensitize.class);
-                if (desensitize != null && !StringUtils.isEmpty(desensitize.key())) {
-                    fieldCacheMap.put(name, new DesensitizationField(field, desensitize, null));
-                    if (!StringUtils.isEmpty(desensitize.ref()) && !fieldCacheMap.containsKey(desensitize.ref())) {
-                        Field refField = allFieldMap.get(desensitize.ref());
-                        if (refField != null) {
-                            fieldCacheMap.put(desensitize.ref(), new DesensitizationField(refField, null, null));
-                        }
+                if (desensitize == null) {
+                    return;
+                }
+                if (StringUtils.isEmpty(desensitize.key()) && StringUtils.isEmpty(desensitize.pattern())) {
+                    return;
+                }
+                fieldCacheMap.put(name, new DesensitizationField(field, desensitize, null));
+                if (!StringUtils.isEmpty(desensitize.ref()) && !fieldCacheMap.containsKey(desensitize.ref())) {
+                    Field refField = allFieldMap.get(desensitize.ref());
+                    if (refField != null) {
+                        fieldCacheMap.put(desensitize.ref(), new DesensitizationField(refField, null, null));
                     }
                 }
+
             } else {
                 NestedDesensitize nestedDesensitize = field.getAnnotation(NestedDesensitize.class);
                 if (nestedDesensitize != null) {

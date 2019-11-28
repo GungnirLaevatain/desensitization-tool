@@ -34,11 +34,17 @@ public class DesensitizationTest {
         Assert.assertEquals("**************6789", idCard);
         String idCard2 = DesensitizationTool.desensitize("idcard2", "123456789123456789");
         Assert.assertEquals("**************6789", idCard2);
-        TestEntity innerEntity = new TestEntity("123456789123456798", "123", "12345678922", null);
-        TestEntity testEntity = new TestEntity("123456789123456789", "123", "12345678911", innerEntity);
+        TestEntity innerEntity = new TestEntity("123456789123456798", "123", "12345678922",
+                null, null, "112");
+        TestEntity testEntity = new TestEntity("123456789123456789", "123", "12345678911",
+                innerEntity, "123", null);
         DesensitizationTool.desensitize(testEntity);
         Assert.assertEquals("**************6789", testEntity.getTo());
+        Assert.assertEquals("*2*45*************", testEntity.getTo2());
+        Assert.assertNull(testEntity.getTo3());
         Assert.assertEquals("**************6798", testEntity.getEntity().getTo());
+        Assert.assertEquals("*2*45*************", testEntity.getEntity().getTo2());
+        Assert.assertEquals("1*2", testEntity.getEntity().getTo3());
         Assert.assertEquals("123****8911", testEntity.getPhone());
         Assert.assertEquals("123****8922", testEntity.getEntity().getPhone());
         phone = DesensitizationTool.desensitize("commonPattern", "12345678911");
