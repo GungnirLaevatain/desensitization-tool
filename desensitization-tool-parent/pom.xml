@@ -12,6 +12,7 @@
         <module>desensitization-tool</module>
         <module>desensitization-tool-sample</module>
         <module>desensitization-tool-annotation</module>
+        <module>desensitization-tool-aop</module>
     </modules>
 
     <developers>
